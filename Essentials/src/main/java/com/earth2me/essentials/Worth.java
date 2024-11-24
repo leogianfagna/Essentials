@@ -40,6 +40,11 @@ public class Worth implements IConf {
             result = config.getBigDecimal("worth." + itemname + "." + itemStack.getDurability(), BigDecimal.ONE.negate());
         }
 
+        if (itemStack.hasItemMeta() && itemStack.getItemMeta().hasCustomModelData()) {
+            int cmd = itemStack.getItemMeta().getCustomModelData();
+            result = config.getBigDecimal("worth." + itemname + ".cmd" + cmd, BigDecimal.ONE.negate());
+        }
+
         // Check for matches with data value 0
         if (result.signum() < 0) {
             final CommentedConfigurationNode itemNameMatch = config.getSection("worth." + itemname);
@@ -103,7 +108,15 @@ public class Worth implements IConf {
         int max = 0;
         for (final ItemStack s : Inventories.getInventory(user.getBase(), false)) {
             if (s == null || !s.isSimilar(is)) {
-                continue;
+                if (s != null && s.hasItemMeta() && is.hasItemMeta()) {
+                    if (s.getItemMeta().hasCustomModelData() && is.getItemMeta().hasCustomModelData()) {
+                        if (s.getItemMeta().getCustomModelData() != is.getItemMeta().getCustomModelData()) {
+                            continue;
+                        }
+                    }
+                } else {
+                    continue;
+                }
             }
             max += s.getAmount();
         }
@@ -145,6 +158,10 @@ public class Worth implements IConf {
         if (VersionUtil.PRE_FLATTENING && itemStack.getType().getData() == null) {
             // Bukkit-bug: getDurability still contains the correct value, while getData().getData() is 0.
             path = path + "." + itemStack.getDurability();
+        }
+
+        if (itemStack.hasItemMeta() && itemStack.getItemMeta().hasCustomModelData()) {
+            path += ".cmd" + itemStack.getItemMeta().getCustomModelData();
         }
 
         config.setProperty(path, price);
