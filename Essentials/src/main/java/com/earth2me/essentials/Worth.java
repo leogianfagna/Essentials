@@ -42,7 +42,7 @@ public class Worth implements IConf {
 
         if (itemStack.hasItemMeta() && itemStack.getItemMeta().hasCustomModelData()) {
             final int cmd = itemStack.getItemMeta().getCustomModelData();
-            result = config.getBigDecimal("worth." + itemname + ".cmd" + cmd, BigDecimal.ONE.negate());
+            result = config.getBigDecimal("worth." + itemname + "#" + cmd, BigDecimal.ONE.negate());
         }
 
         // Check for matches with data value 0
@@ -161,7 +161,7 @@ public class Worth implements IConf {
         }
 
         if (itemStack.hasItemMeta() && itemStack.getItemMeta().hasCustomModelData()) {
-            path += ".cmd" + itemStack.getItemMeta().getCustomModelData();
+            path += "#" + itemStack.getItemMeta().getCustomModelData();
         }
 
         config.setProperty(path, price);
