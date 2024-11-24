@@ -41,7 +41,7 @@ public class Worth implements IConf {
         }
 
         if (itemStack.hasItemMeta() && itemStack.getItemMeta().hasCustomModelData()) {
-            int cmd = itemStack.getItemMeta().getCustomModelData();
+            final int cmd = itemStack.getItemMeta().getCustomModelData();
             result = config.getBigDecimal("worth." + itemname + ".cmd" + cmd, BigDecimal.ONE.negate());
         }
 
