@@ -1,0 +1,1 @@
+- `/setworth` por custom model data, podendo criar valores diferentes para itens personalizados. (Não testado na 1.21.4, que mudou o customModelData para algo além de um simples inteiro).
